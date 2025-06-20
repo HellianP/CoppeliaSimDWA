@@ -1,6 +1,12 @@
-Make sure you have following files in your directory, in order to run the various examples:
+🚗 CoppeliaSim Python Remote API – DWA com Pioneer P3DX
+Este repositório contém exemplos de integração entre o simulador CoppeliaSim (antigo V-REP) e scripts Python via Remote API, com foco na simulação de movimentação autônoma do robô Pioneer P3DX, incluindo controle por Dynamic Window Approach (DWA).
 
-1. sim.py
-2. simConst.py
-3. the appropriate remote API library: "remoteApi.dll" (Windows), "remoteApi.dylib" (Mac) or "remoteApi.so" (Linux)
-4. simpleTest.py (or any other example file)
+📦 Estrutura Necessária
+Certifique-se de que os seguintes arquivos estejam no mesmo diretório para que os exemplos funcionem corretamente:
+
+Arquivo/Dependência	Descrição
+sim.py	Script de interface Python com a Remote API da CoppeliaSim.
+simConst.py	Constantes utilizadas pela API remota do CoppeliaSim.
+remoteApi.dll / remoteApi.so / remoteApi.dylib	Biblioteca nativa da Remote API, dependente do sistema operacional.
+simpleTest.py	Exemplo de controle simples do robô. Pode ser substituído por outro arquivo de simulação como dwaController.py.
+*.ttt	(Opcional) Arquivo de cena do CoppeliaSim com o Pioneer P3DX e sensores configurados.
