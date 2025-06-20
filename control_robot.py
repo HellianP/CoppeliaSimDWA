@@ -153,14 +153,23 @@ time.sleep(1.0)
 
 # --- DEFINIÇÃO DO OBJETIVO ---
 # Altere estas coordenadas para definir para onde o robô deve ir.
-goal = np.array([1.5, 1.8]) 
+goal = np.array([1.5, -1.8]) 
 state = np.array([0.0, 0.0, 0.0, 0.0, 0.0]) # x, y, yaw, v, w
 
 print(f"🧭 Iniciando navegação com DWA até o ponto {goal}.")
 sim.simxStartSimulation(clientID, sim.simx_opmode_oneshot)
 
 # --- Loop de Controle Principal ---
+# --- Loop de Controle Principal ---
 try:
+    last_quadrant = None
+    quadrant_timer = 0.0
+    quadrant_timeout = 5.0  # segundos parado no mesmo quadrante
+    t_start = time.time()
+    quadrant_size = 1.0
+    goal_alternate = np.array([0.0, 0.0])
+    goal_active = goal.copy()
+
     while sim.simxGetConnectionId(clientID) != -1:
         # 1. Obter estado atual (posição e orientação)
         _, pos = sim.simxGetObjectPosition(clientID, robot_handle, -1, sim.simx_opmode_buffer)
@@ -170,8 +179,24 @@ try:
         else:
             time.sleep(config.dt)
             continue
-            
-        # 2. Ler sensores e construir mapa de obstáculos
+
+        # ★ 2. Verificação de quadrante
+        current_quadrant = (int(state[0] // quadrant_size), int(state[1] // quadrant_size))
+        if current_quadrant == last_quadrant:
+            quadrant_timer += config.dt
+        else:
+            quadrant_timer = 0.0
+            last_quadrant = current_quadrant
+
+        # ★ 3. Se o robô estiver preso muito tempo no mesmo quadrante
+        if quadrant_timer > quadrant_timeout:
+            print(f"\n⚠️ Robô preso no quadrante {current_quadrant}. Retornando à origem e recalculando rota.")
+            goal_active = goal_alternate.copy()
+            quadrant_timer = 0.0
+            last_quadrant = None
+            continue  # volta ao início do loop para mudar o objetivo
+
+        # 4. Ler sensores e construir mapa de obstáculos
         obstacles_xy = []
         for i, h in enumerate(sensors):
             _, detected, point, _, _ = sim.simxReadProximitySensor(clientID, h, sim.simx_opmode_buffer)
@@ -183,16 +208,20 @@ try:
                     oy = state[1] + dist * math.sin(global_sensor_yaw)
                     obstacles_xy.append([ox, oy])
 
-        # 3. Verificar se chegou ao objetivo
-        if math.hypot(state[0] - goal[0], state[1] - goal[1]) < 0.5:
-            print("\n🎯 Objetivo alcançado!")
+        # 5. Verificar se chegou ao objetivo
+        if math.hypot(state[0] - goal_active[0], state[1] - goal_active[1]) < 0.5:
+            if np.array_equal(goal_active, goal_alternate):
+                print("\n✅ Retornou à origem. Redefinindo caminho para o destino final.")
+                goal_active = goal.copy()
+                continue
+            print("\n🎯 Objetivo final alcançado!")
             break
 
-        # 4. Executar o DWA para obter as melhores velocidades
-        best_v, best_w = dwa_control(state, obstacles_xy, goal, config)
-        state[3], state[4] = best_v, best_w # Atualiza o estado com as novas velocidades
+        # 6. Executar o DWA
+        best_v, best_w = dwa_control(state, obstacles_xy, goal_active, config)
+        state[3], state[4] = best_v, best_w
 
-        # 5. Converter velocidades (v,w) para velocidades das rodas e comandar motores
+        # 7. Converter (v,w) para velocidades das rodas
         v_right = best_v + (best_w * config.wheel_base / 2.0)
         v_left = best_v - (best_w * config.wheel_base / 2.0)
         w_right = v_right / config.wheel_radius
