@@ -1,46 +1,51 @@
-# Navegação Autônoma do Robô Pioneer P3DX com DWA no CoppeliaSim
+🧭 Navegação Autônoma do Robô Pioneer P3DX com DWA no CoppeliaSim
+🚗 Visão Geral
+Este projeto demonstra a simulação de navegação autônoma do robô Pioneer P3DX no CoppeliaSim (antigo V-REP), utilizando a Remote API Python e o algoritmo Dynamic Window Approach (DWA) para planejamento de trajetórias em tempo real.
 
-🚗 **CoppeliaSim Python Remote API – DWA com Pioneer P3DX**  
-Este repositório contém exemplos de integração entre o simulador CoppeliaSim (antigo V-REP) e scripts Python via Remote API, com foco na simulação de movimentação autônoma do robô Pioneer P3DX, incluindo controle por Dynamic Window Approach (DWA).
+Inclui ainda um controle reativo Braitenberg para recuperação, e um sistema de memória espacial para evitar bloqueios em áreas recorrentes.
 
----
+📂 Estrutura do Projeto
+Certifique-se de que os seguintes arquivos estejam presentes no mesmo diretório:
 
-## 📦 Estrutura Necessária
+Arquivo / Dependência	Descrição
+sim.py	Script de interface Python com a Remote API da CoppeliaSim.
+simConst.py	Constantes usadas pela Remote API.
+remoteApi.dll, remoteApi.so, remoteApi.dylib	Bibliotecas nativas da Remote API (depende do sistema operacional).
+control_robot.py ou simpleTest.py	Script principal para controle do robô (substituível conforme o experimento).
+*.ttt (opcional)	Arquivo de cena do CoppeliaSim com o Pioneer P3DX e sensores configurados.
 
-Certifique-se de que os seguintes arquivos estejam no mesmo diretório para que os exemplos funcionem corretamente:
+⚙️ Funcionalidades
+✅ Navegação autônoma via Dynamic Window Approach (DWA)
 
-| Arquivo/Dependência                | Descrição                                                                                   |
-|----------------------------------|---------------------------------------------------------------------------------------------|
-| `sim.py`                         | Script de interface Python com a Remote API da CoppeliaSim.                                |
-| `simConst.py`                    | Constantes utilizadas pela API remota do CoppeliaSim.                                      |
-| `remoteApi.dll / remoteApi.so / remoteApi.dylib` | Biblioteca nativa da Remote API, dependente do sistema operacional.                 |
-| `simpleTest.py`                  | Exemplo de controle simples do robô. Pode ser substituído por outro arquivo, como `control_robot.py`. |
-| `*.ttt`                         | (Opcional) Arquivo de cena do CoppeliaSim com o Pioneer P3DX e sensores configurados.      |
+🔁 Controle reativo Braitenberg como fallback
 
----
+🧠 Sistema de memória de quadrantes para evitar áreas bloqueadas
 
-## Descrição
+🔍 Monitoramento de obstáculos com sensores e ajustes de alcance
 
-- Algoritmo DWA para planejamento de trajetórias em tempo real.
-- Controle reativo Braitenberg como fallback para recuperação em casos de bloqueio.
-- Monitoramento e memória de quadrantes para evitar que o robô fique preso em regiões.
-- Ajustes nos alcances dos sensores para balancear segurança e eficiência.
-- Impressão detalhada no terminal sobre a posição, detecção de obstáculos, e velocidades do robô.
+🖥️ Impressão no terminal: posição, obstáculos e velocidade do robô
 
----
+📋 Requisitos
+Requisito	Versão / Observação
+Python	3.8 ou superior
+CoppeliaSim	Instância configurada com Remote API na porta 19999
+Biblioteca Remote API Python	Remote API Functions Python
 
-## Requisitos
+▶️ Como Executar
+Siga os passos abaixo para iniciar a simulação:
 
-- Python 3.8+
-- Biblioteca [CoppeliaSim Remote API Python](https://coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm)
-- CoppeliaSim instalado e configurado para aceitar conexões remotas na porta 19999.
+Abra o CoppeliaSim e carregue a cena com o robô Pioneer P3DX.
 
----
+Certifique-se de que a porta 19999 esteja ativada para conexões remotas.
 
-## Como executar
+Execute o script no terminal:
 
-1. Inicie o CoppeliaSim e abra a cena com o robô Pioneer P3DX configurado.
-2. Ative a API remota na porta 19999 (padrão).
-3. No terminal, execute:
-   ```bash
-   python control_robot.py
+bash
+Copiar
+Editar
+python control_robot.py
+Acompanhe no terminal os dados da simulação: posição, obstáculos, comandos de movimento.
+
+🧠 Considerações Finais
+Este projeto fornece uma base sólida para a simulação de robôs móveis com planejamento reativo e deliberativo no CoppeliaSim. O uso do DWA permite respostas ágeis a obstáculos, enquanto o sistema Braitenberg complementa com robustez em cenários dinâmicos. O uso combinado dessas abordagens favorece a navegação confiável em ambientes complexos.
+
