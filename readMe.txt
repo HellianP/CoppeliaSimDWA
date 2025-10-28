@@ -1,5 +1,4 @@
-[![Assista ao vídeo no YouTube]](https://www.youtube.com/watch?v=s1JZXWI64hs&authuser=1)
-
+Assista ao vídeo no YouTube  (https://www.youtube.com/watch?v=s1JZXWI64hs&authuser=1)
 
 🧭 Navegação Autônoma do Robô Pioneer P3DX com DWA no CoppeliaSim
 🚗 Visão Geral
@@ -36,11 +35,8 @@ Biblioteca Remote API Python	Remote API Functions Python
 
 ▶️ Como Executar
 Siga os passos abaixo para iniciar a simulação:
-
 Abra o CoppeliaSim e carregue a cena com o robô Pioneer P3DX.
-
 Certifique-se de que a porta 19999 esteja ativada para conexões remotas.
-
 Execute o script no terminal:
 
 bash
@@ -48,7 +44,4 @@ Copiar
 Editar
 python control_robot.py
 Acompanhe no terminal os dados da simulação: posição, obstáculos, comandos de movimento.
-
-🧠 Considerações Finais
-Este projeto fornece uma base sólida para a simulação de robôs móveis com planejamento reativo e deliberativo no CoppeliaSim. O uso do DWA permite respostas ágeis a obstáculos, enquanto o sistema Braitenberg complementa com robustez em cenários dinâmicos. O uso combinado dessas abordagens favorece a navegação confiável em ambientes complexos.
 
