@@ -1,3 +1,6 @@
+[![Assista ao vídeo no YouTube]](https://www.youtube.com/watch?v=s1JZXWI64hs&authuser=1)
+
+
 🧭 Navegação Autônoma do Robô Pioneer P3DX com DWA no CoppeliaSim
 🚗 Visão Geral
 Este projeto demonstra a simulação de navegação autônoma do robô Pioneer P3DX no CoppeliaSim (antigo V-REP), utilizando a Remote API Python e o algoritmo Dynamic Window Approach (DWA) para planejamento de trajetórias em tempo real.
